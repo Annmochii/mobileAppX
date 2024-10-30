@@ -3,8 +3,11 @@ import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import * as Font from 'expo-font';
 import { Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
 import LogoUVV from '../assets/images/9.png';
+import { useNavigation } from '@react-navigation/native';
 
-export default function App() {
+export default function Index() {
+  const navigation = useNavigation();
+
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
@@ -20,7 +23,7 @@ export default function App() {
   }, []);
 
   if (!fontsLoaded) {
-    return null; // Retorna null enquanto a fonte é carregada
+    return null; 
   }
 
   return (
@@ -29,17 +32,17 @@ export default function App() {
       <Text style={styles.title}>Veja o que está acontecendo no mundo neste momento.</Text>
       
       <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.buttonPrimary}>
-        <Text style={styles.buttonTextPrimary}>Entrar</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity style={styles.buttonSecondary}>
-        <Text style={styles.buttonTextSecondary}>Criar conta</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonPrimary} onPress={() => navigation.navigate('SignIn')} >
+          <Text style={styles.buttonTextPrimary}>Entrar</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.buttonSecondary}>
+          <Text style={styles.buttonTextSecondary}>Criar conta</Text>
+        </TouchableOpacity>
 
-      <Text style={styles.footerText}>
-        Ao se inscrever, você concorda com nossos <Text style={styles.link}>Termos</Text>, a <Text style={styles.link}>Política de Privacidade</Text> e o <Text style={styles.link}>Uso de Cookies</Text>.
-      </Text>
+        <Text style={styles.footerText}>
+          Ao se inscrever, você concorda com nossos <Text style={styles.link}>Termos</Text>, a <Text style={styles.link}>Política de Privacidade</Text> e o <Text style={styles.link}>Uso de Cookies</Text>.
+        </Text>
       </View>
 
     </View>
