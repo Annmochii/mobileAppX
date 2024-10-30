@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { useFonts, Roboto_400Regular } from '@expo-google-fonts/roboto';
 import { useNavigation } from '@react-navigation/native';
-import 'material-icons/iconfont/material-icons.scss';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -17,14 +18,14 @@ export default function SignIn() {
   });
 
   if (!fontsLoaded) {
-    return null; // Evitar o AppLoading, apenas renderize null até a fonte ser carregada.
+    return null; 
   }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.closeButton}>
-        <Text style={styles.closeText}>X</Text>
-      </TouchableOpacity>
+      <IconButton onClick={() => navigation.navigate('Index')} style={styles.closeButton}>
+        <CloseIcon />
+      </IconButton>
 
       <Text style={styles.title}>Digite sua senha</Text>
 
