@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { useFonts, Roboto_400Regular } from '@expo-google-fonts/roboto';
 import { useNavigation } from '@react-navigation/native';
+import 'material-icons/iconfont/material-icons.scss';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
