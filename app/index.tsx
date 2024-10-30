@@ -5,7 +5,7 @@ import { Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
 import LogoUVV from '../assets/images/9.png';
 import { useNavigation } from '@react-navigation/native';
 
-export default function Index() {
+export default function index() {
   const navigation = useNavigation();
 
   const [fontsLoaded, setFontsLoaded] = useState(false);

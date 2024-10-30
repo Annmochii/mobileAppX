@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
-import { useFonts, Roboto_400Regular } from '@expo-google-fonts/roboto';
+import { useFonts, Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
 import { useNavigation } from '@react-navigation/native';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -15,11 +15,15 @@ export default function SignIn() {
 
   let [fontsLoaded] = useFonts({
     Roboto_400Regular,
+    Roboto_500Medium,
   });
 
   if (!fontsLoaded) {
     return null; 
   }
+
+  // Verifica se ambos os campos estão preenchidos
+  const isLoginEnabled = email !== '' && senha !== '';
 
   return (
     <View style={styles.container}>
@@ -27,11 +31,11 @@ export default function SignIn() {
         <CloseIcon />
       </IconButton>
 
-      <Text style={styles.title}>Digite sua senha</Text>
+      <Text style={styles.title}>Digite seus dados de usuário</Text>
 
       <View style={styles.inputContainer}>
         <Text style={[styles.placeholder, isEmailFocused || email ? styles.focusedPlaceholder : null]}>
-          Celular, e-mail ou nome de usuário
+          E-mail
         </Text>
         <TextInput
           style={styles.input}
@@ -58,8 +62,12 @@ export default function SignIn() {
         <Text style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginButton}>
-        <Text style={styles.loginButtonText}>Entrar</Text>
+      {/* Estiliza o botão de login dinamicamente */}
+      <TouchableOpacity
+        style={[styles.loginButton, isLoginEnabled && styles.loginButtonEnabled]}
+        disabled={!isLoginEnabled}
+      >
+        <Text style={[styles.loginButtonText, isLoginEnabled && styles.loginButtonTextEnabled]}>Entrar</Text>
       </TouchableOpacity>
     </View>
   );
@@ -70,19 +78,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
     padding: 20,
+    width: '100%',
   },
   closeButton: {
     alignSelf: 'flex-start',
-  },
-  closeText: {
     color: '#FFF',
-    fontSize: 20,
+    padding: 0,
   },
   title: {
     color: '#FFF',
     fontSize: 24,
-    fontFamily: 'Roboto_400Regular',
-    marginBottom: 30,
+    fontFamily: 'Roboto_500Medium',
+    marginTop: 32,
+    marginBottom: 24,
   },
   inputContainer: {
     marginBottom: 20,
@@ -101,13 +109,16 @@ const styles = StyleSheet.create({
   focusedPlaceholder: {
     top: -10,
     fontSize: 12,
-    color: '#FFF',
+    color: '#1DA1F2',
+    backgroundColor: '#000',
+    paddingHorizontal: 2,
+    marginLeft: 4,
   },
   input: {
     color: '#FFF',
     fontSize: 16,
-    paddingTop: 10,
-    paddingBottom: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
     fontFamily: 'Roboto_400Regular',
   },
   forgotPasswordButton: {
@@ -125,9 +136,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'center',
   },
+  loginButtonEnabled: {
+    backgroundColor: '#1DA1F2', // Muda a cor para azul quando habilitado
+  },
   loginButtonText: {
     color: '#AAA',
     fontSize: 16,
     fontFamily: 'Roboto_400Regular',
+  },
+  loginButtonTextEnabled: {
+    color: '#FFF', // Muda a cor do texto para branco quando habilitado
   },
 });
