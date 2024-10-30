@@ -33,7 +33,7 @@ export default function SignIn() {
 
       <Text style={styles.title}>Digite seus dados de usuário</Text>
 
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer]}>
         <Text style={[styles.placeholder, isEmailFocused || email ? styles.focusedPlaceholder : null]}>
           E-mail
         </Text>
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   focusedPlaceholder: {
     top: -10,
     fontSize: 12,
-    color: '#1DA1F2',
+    color: '#FFF',
     backgroundColor: '#000',
     paddingHorizontal: 2,
     marginLeft: 4,
