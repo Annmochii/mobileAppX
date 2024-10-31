@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { useFonts, Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
-import { useNavigation } from '@react-navigation/native';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { router } from 'expo-router';
@@ -11,8 +10,6 @@ export default function SignIn() {
   const [senha, setSenha] = useState('');
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isSenhaFocused, setIsSenhaFocused] = useState(false);
-
-  const navigation = useNavigation();
 
   const isLoginEnabled = email !== '' && senha !== '';
 
@@ -55,7 +52,7 @@ export default function SignIn() {
 
   return (
     <View style={styles.container}>
-      <IconButton onClick={() => navigation.navigate('Index')} style={styles.closeButton}>
+      <IconButton  onClick={() => router.push("/")} style={styles.closeButton}>
         <CloseIcon />
       </IconButton>
 
