@@ -117,12 +117,10 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
   },
   logoContainer: {
-    width: "100%",
-    paddingRight: 24,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -131,10 +129,10 @@ const styles = StyleSheet.create({
     height: 32,
   },
   closeButton: {
-    alignSelf: 'flex-start',
+    position: 'absolute',
+    left: 0,
     color: '#FFF',
     padding: 0,
-    alignSelf: "center",
   },
   title: {
     color: '#FFF',

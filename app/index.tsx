@@ -5,7 +5,7 @@ import { Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
 import LogoUVV from '../assets/images/9.png';
 import { router } from 'expo-router';
 
-export default function index() {
+export default function Index() {
 
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
