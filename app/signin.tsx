@@ -13,7 +13,14 @@ export default function SignIn() {
 
   const navigation = useNavigation();
 
+  // Verifica se ambos os campos estão preenchidos
+  const isLoginEnabled = email !== '' && senha !== '';
+
   async function submit(){
+    if(!isLoginEnabled){
+      alert("Não deixe usuário ou senha em branco");
+    }
+
     console.log("Email :"+ email);
     console.log("Senha :"+ senha);
 
@@ -38,13 +45,6 @@ export default function SignIn() {
 
   if (!fontsLoaded) {
     return null; 
-  }
-
-  // Verifica se ambos os campos estão preenchidos
-  const isLoginEnabled = email !== '' && senha !== '';
-
-  if(!isLoginEnabled){
-    alert("Não deixe usuário ou senha em branco");
   }
 
   return (
@@ -84,10 +84,10 @@ export default function SignIn() {
         <Text style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
       </TouchableOpacity>
 
-      {/* Estiliza o botão de login dinamicamente */}
       <TouchableOpacity
         style={[styles.loginButton, isLoginEnabled && styles.loginButtonEnabled]}
         disabled={!isLoginEnabled}
+        onPress={() => {submit()}}
       >
         <Text style={[styles.loginButtonText, isLoginEnabled && styles.loginButtonTextEnabled]}>Entrar</Text>
       </TouchableOpacity>
