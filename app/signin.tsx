@@ -13,6 +13,24 @@ export default function SignIn() {
 
   const navigation = useNavigation();
 
+  async function submit(){
+    console.log("Email :"+ email);
+    console.log("Senha :"+ senha);
+
+    const response = await fetch("http://localhost:3000/auth/signin", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        password: senha,
+        email: email
+      })
+    })
+
+    console.log(response)
+  }
+
   let [fontsLoaded] = useFonts({
     Roboto_400Regular,
     Roboto_500Medium,
@@ -24,6 +42,10 @@ export default function SignIn() {
 
   // Verifica se ambos os campos estão preenchidos
   const isLoginEnabled = email !== '' && senha !== '';
+
+  if(!isLoginEnabled){
+    alert("Não deixe usuário ou senha em branco");
+  }
 
   return (
     <View style={styles.container}>
