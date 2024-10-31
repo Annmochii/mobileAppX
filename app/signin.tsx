@@ -4,6 +4,7 @@ import { useFonts, Roboto_400Regular, Roboto_500Medium } from '@expo-google-font
 import { useNavigation } from '@react-navigation/native';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { router } from 'expo-router';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -28,7 +29,13 @@ export default function SignIn() {
       })
     })
 
-    console.log(response)
+    const result = await response.json();
+    console.log(result);
+    if(result.status !== 200){
+      alert("Erro ao realizar a autenticação");
+    } else {
+      router.push("/(tabs)")
+    }
   }
 
   let [fontsLoaded] = useFonts({
@@ -40,7 +47,6 @@ export default function SignIn() {
     return null; 
   }
 
-  // Verifica se ambos os campos estão preenchidos
   const isLoginEnabled = email !== '' && senha !== '';
 
   if(!isLoginEnabled){
