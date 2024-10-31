@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View, StyleSheet, Image } from 'react-native';
 import { useFonts, Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import LogoUVV from '../assets/images/9.png';
 import { router } from 'expo-router';
 
 export default function SignIn() {
@@ -52,9 +53,16 @@ export default function SignIn() {
 
   return (
     <View style={styles.container}>
-      <IconButton  onClick={() => router.push("/")} style={styles.closeButton}>
-        <CloseIcon />
-      </IconButton>
+
+      <View style={styles.topContainer}>
+        <IconButton  onClick={() => router.push("/")} style={styles.closeButton}>
+          <CloseIcon />
+        </IconButton>
+
+        <View style={styles.logoContainer}>
+          <Image source={LogoUVV} style={styles.logo}/>
+        </View>
+      </View>
 
       <Text style={styles.title}>Digite seus dados de usuário</Text>
 
@@ -105,10 +113,28 @@ const styles = StyleSheet.create({
     padding: 20,
     width: '100%',
   },
+  topContainer: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logoContainer: {
+    width: "100%",
+    paddingRight: 24,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logo: {
+    width: 32,
+    height: 32,
+  },
   closeButton: {
     alignSelf: 'flex-start',
     color: '#FFF',
     padding: 0,
+    alignSelf: "center",
   },
   title: {
     color: '#FFF',
