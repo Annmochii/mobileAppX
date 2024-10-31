@@ -3,10 +3,9 @@ import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import * as Font from 'expo-font';
 import { Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
 import LogoUVV from '../assets/images/9.png';
-import { useNavigation } from '@react-navigation/native';
+import { router } from 'expo-router';
 
 export default function index() {
-  const navigation = useNavigation();
 
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
@@ -32,11 +31,11 @@ export default function index() {
       <Text style={styles.title}>Veja o que está acontecendo no mundo neste momento.</Text>
       
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonPrimary} onPress={() => navigation.navigate('SignIn')} >
+        <TouchableOpacity style={styles.buttonPrimary} onPress={() => router.push("/signin")} >
           <Text style={styles.buttonTextPrimary}>Entrar</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={styles.buttonSecondary}>
+        <TouchableOpacity style={styles.buttonSecondary} onPress={() => router.push("/signup")}>
           <Text style={styles.buttonTextSecondary}>Criar conta</Text>
         </TouchableOpacity>
 
