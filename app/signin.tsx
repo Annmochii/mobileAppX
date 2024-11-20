@@ -5,6 +5,8 @@ import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import LogoUVV from '../assets/images/9.png';
 import { router } from 'expo-router';
+import { Platform } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -35,6 +37,13 @@ export default function SignIn() {
 
     const result = await response.json();
     console.log(result);
+    
+    if (Platform.OS === 'web') {
+      sessionStorage.setItem("token_autenticacao",result.token);
+    } else {
+      SecureStore.setItem("token_autenticacao",result.token);
+    }
+    
     if(result.status !== 200){
       alert("Erro ao realizar a autenticação");
     } else {

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, Platform } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
 import AppLoading from 'expo-app-loading';
 import LogoUVV from '../../assets/images/9.png';
+import * as SecureStore from 'expo-secure-store';
 
 interface Post {
   id: number; 
@@ -21,11 +22,18 @@ interface Author {
 
 const getAuthor = async (authorId: string): Promise<string> => {
   try {
+    let token;
+    if (Platform.OS === 'web') {
+      token = sessionStorage.getItem("token_autenticacao")
+    } else {
+      token = SecureStore.getItem("token_autenticacao");
+    }
     // Faz a requisição para a API que contém os autores
     const response = await fetch(`http://localhost:3000/author/${authorId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "authorization": token??""
       },
     });
 
@@ -34,7 +42,7 @@ const getAuthor = async (authorId: string): Promise<string> => {
     }
 
     // Converte a resposta para JSON
-    const author: Author = await response.json();
+    const author: Author = (await response.json()).author;
 
     // Retorna o nome do autor
     return author.name;
@@ -46,12 +54,14 @@ const getAuthor = async (authorId: string): Promise<string> => {
 
 const listPosts = async (): Promise<Post[]> => {
   try {
+    
     // Faz a requisição para a rota da API
     const response = await fetch("http://localhost:3000/posts", {
       method: "GET",
-      headers: {
+      headers: new Headers({
         "Content-Type": "application/json",
-      },
+        
+      }),
     });
 
     // Verifica se a resposta foi bem-sucedida
@@ -94,6 +104,7 @@ export default function Index() {
       }
 
       setAuthorName(authorNameMap);
+      
     };
 
     if (posts.length > 0) {
