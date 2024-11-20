@@ -95,6 +95,8 @@ export default function Index() {
       setPosts(fetchedPosts);
     };
 
+    console.log(posts)
+
     loadPosts();
   }, []);
 
@@ -123,10 +125,18 @@ export default function Index() {
     <View style={styles.postContainer}>
       <View style={styles.header}>
         <Text style={styles.username}>{authorName[item.authorId.toString()] || "Carregando..."}</Text>
+        <TouchableOpacity
+          style={styles.deleteCommentButton}
+          onPress={() => handleDeleteButtonPress(item.id.toString())}
+          >
+          <FontAwesome name="trash" size={16} color="#a9a9a9" />
+        </TouchableOpacity>
       </View>
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.content}>{item.content}</Text>
-
+      <TouchableOpacity style={styles.addCommentButton} onPress={() => handleCommentButtonPress(item.id.toString())}>
+        <FontAwesome name="comment" size={16} color="#a9a9a9" />
+      </TouchableOpacity>
     </View>
   );
 
@@ -144,6 +154,39 @@ export default function Index() {
     router.push("../(write)/writeposts");
   };
 
+  const handleCommentButtonPress = async (id: string): Promise<void> => {
+    console.log('Novo comentário');
+    router.push(`../(write)/writecomments?id=${id}`);
+  };
+
+  const handleDeleteButtonPress = async (id: string): Promise<void> => {
+    console.log(`Deletando post com id: ${id}`);
+    try {
+      let token;
+      if (Platform.OS === 'web') {
+        token = sessionStorage.getItem("token_autenticacao");
+      } else {
+        token = await SecureStore.getItemAsync("token_autenticacao");
+      }
+  
+      const response = await fetch(`http://localhost:3000/post/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "authorization": token ?? "",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao deletar o post");
+      }
+  
+      console.log("Post deletado com sucesso.");
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== parseInt(id)));
+    } catch (error) {
+      console.error("Erro ao deletar o post:", error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -193,9 +236,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 8,
-  },
-  userIcon: {
-    marginRight: 8,
+    justifyContent: 'space-between',
   },
   username: {
     color: '#1DA1F2',
@@ -213,11 +254,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Roboto_400Regular',
   },
+  addCommentButton: {
+    justifyContent: 'flex-end',
+    height: 24,
+  },
+  deleteCommentButton: {
+    justifyContent: 'center',
+    height: 24,
+  },
   postButton: {
     position: 'absolute',
     bottom: 20,
     right: 20,
-    backgroundColor: '#007BFF',
+    backgroundColor: '#1DA1F2',
     width: 60,
     height: 60,
     borderRadius: 30,
