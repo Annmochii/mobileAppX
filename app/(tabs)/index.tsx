@@ -156,7 +156,7 @@ export default function Index() {
 
   const handleCommentButtonPress = async (id: string): Promise<void> => {
     console.log('Novo comentário');
-    router.push(`../(write)/writecomments?id=${id}`);
+    router.push(`../(write)/writecomments/${id}`);
   };
 
   const handleDeleteButtonPress = async (id: string): Promise<void> => {

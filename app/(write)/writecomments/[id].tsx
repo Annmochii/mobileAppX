@@ -3,15 +3,14 @@ import { View, TextInput, StyleSheet, TouchableOpacity, Text, Platform } from 'r
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { router, useRouter } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 
 const CommentScreen = () => { 
   const inputRef = useRef<TextInput>(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-
-  const router = useRouter();
-  const { id } = router.query; 
+  const { id } = useLocalSearchParams();
 
   const isPostEnabled = title !== '' && content !== '';
 
@@ -43,7 +42,7 @@ const CommentScreen = () => {
         title: title,
         content: content,
         published: true,
-        postId: parseInt(id), 
+        postId: parseInt(id as string), 
         authorId: user.id,
       })
     });
