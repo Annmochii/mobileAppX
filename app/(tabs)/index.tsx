@@ -5,6 +5,8 @@ import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/
 import AppLoading from 'expo-app-loading';
 import LogoUVV from '../../assets/images/9.png';
 import * as SecureStore from 'expo-secure-store';
+import { router } from 'expo-router';
+
 
 interface Post {
   id: number; 
@@ -120,6 +122,7 @@ export default function Index() {
       </View>
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.content}>{item.content}</Text>
+
     </View>
   );
 
@@ -131,6 +134,12 @@ export default function Index() {
   if (!fontsLoaded) {
     return <AppLoading />;
   }
+
+  const handleButtonPress = () => {
+    console.log('Novo post');
+    router.push("../(write)/writeposts.tsx");
+  };
+
 
   return (
     <View style={styles.container}>
@@ -144,6 +153,10 @@ export default function Index() {
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.list}
       />
+
+      <TouchableOpacity style={styles.postButton} onPress={handleButtonPress}>
+        <FontAwesome name="plus" size={24} color="#fff" />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -181,9 +194,9 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   username: {
-    color: '#fff',
-    fontSize: 16,
-    fontFamily: 'Roboto_700Bold',
+    color: '#1DA1F2',
+    fontSize: 14,
+    fontFamily: 'Roboto_400Regular',
   },
   title: {
     fontSize: 18,
@@ -195,5 +208,21 @@ const styles = StyleSheet.create({
     color: '#ddd',
     fontSize: 14,
     fontFamily: 'Roboto_400Regular',
+  },
+  postButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#007BFF',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
   },
 });

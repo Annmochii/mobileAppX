@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loginButtonEnabled: {
-    backgroundColor: '#1DA1F2', // Muda a cor para azul quando habilitado
+    backgroundColor: '#1DA1F2', 
   },
   loginButtonText: {
     color: '#AAA',
@@ -207,6 +207,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto_400Regular',
   },
   loginButtonTextEnabled: {
-    color: '#FFF', // Muda a cor do texto para branco quando habilitado
+    color: '#FFF',
   },
 });
