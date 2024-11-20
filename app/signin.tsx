@@ -38,15 +38,18 @@ export default function SignIn() {
     const result = await response.json();
     console.log(result);
     
-    if (Platform.OS === 'web') {
-      sessionStorage.setItem("token_autenticacao",result.token);
-    } else {
-      SecureStore.setItem("token_autenticacao",result.token);
-    }
+    
     
     if(result.status !== 200){
       alert("Erro ao realizar a autenticação");
     } else {
+      if (Platform.OS === 'web') {
+        sessionStorage.setItem("token_autenticacao",result.token);
+        sessionStorage.setItem("user",JSON.stringify(result.user));
+      } else {
+        SecureStore.setItem("token_autenticacao",result.token);
+        SecureStore.setItem("user",JSON.stringify(result.user));
+      }
       router.push("/(tabs)")
     }
   }

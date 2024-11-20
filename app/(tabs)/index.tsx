@@ -12,7 +12,6 @@ interface Post {
   title: string;
   content: string;
 }
-
 interface Author {
   id: number;
   name: string;
@@ -25,6 +24,7 @@ const getAuthor = async (authorId: string): Promise<string> => {
     let token;
     if (Platform.OS === 'web') {
       token = sessionStorage.getItem("token_autenticacao")
+      let user = JSON.parse(sessionStorage.getItem("user")??"") // exemplo get user
     } else {
       token = SecureStore.getItem("token_autenticacao");
     }
