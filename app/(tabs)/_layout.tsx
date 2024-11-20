@@ -29,7 +29,7 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'user-circle' : 'user'} color={color} />  
+            <TabBarIcon name={focused ? 'person-circle-outiline' : 'person-circle'} color={color} />  
           ),
         }}
       />
