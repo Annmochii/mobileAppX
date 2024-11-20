@@ -26,7 +26,6 @@ const getAuthor = async (authorId: string): Promise<string> => {
     let token;
     if (Platform.OS === 'web') {
       token = sessionStorage.getItem("token_autenticacao")
-      let user = JSON.parse(sessionStorage.getItem("user")??"") // exemplo get user
     } else {
       token = SecureStore.getItem("token_autenticacao");
     }
@@ -56,13 +55,18 @@ const getAuthor = async (authorId: string): Promise<string> => {
 
 const listPosts = async (): Promise<Post[]> => {
   try {
-    
+    let token;
+    if (Platform.OS === 'web') {
+      token = sessionStorage.getItem("token_autenticacao")
+    } else {
+      token = SecureStore.getItem("token_autenticacao");
+    }
     // Faz a requisição para a rota da API
     const response = await fetch("http://localhost:3000/posts", {
       method: "GET",
       headers: new Headers({
         "Content-Type": "application/json",
-        
+        "authorization": token??""
       }),
     });
 
@@ -137,7 +141,7 @@ export default function Index() {
 
   const handleButtonPress = () => {
     console.log('Novo post');
-    router.push("../(write)/writeposts.tsx");
+    router.push("../(write)/writeposts");
   };
 
 
