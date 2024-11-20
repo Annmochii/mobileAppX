@@ -1,70 +1,188 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
+import AppLoading from 'expo-app-loading';
+import LogoUVV from '../../assets/images/9.png';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+interface Post {
+  id: number; 
+  authorId: number;
+  title: string;
+  content: string;
+}
 
-export default function HomeScreen() {
+interface Author {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+}
+
+const getAuthor = async (authorId: string): Promise<string> => {
+  try {
+    // Faz a requisição para a API que contém os autores
+    const response = await fetch(`http://localhost:3000/author/${authorId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar o autor");
+    }
+
+    // Converte a resposta para JSON
+    const author: Author = await response.json();
+
+    // Retorna o nome do autor
+    return author.name;
+  } catch (error) {
+    console.error("Erro ao obter o nome do autor:", error);
+    return "Autor desconhecido";
+  }
+};
+
+const listPosts = async (): Promise<Post[]> => {
+  try {
+    // Faz a requisição para a rota da API
+    const response = await fetch("http://localhost:3000/posts", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    // Verifica se a resposta foi bem-sucedida
+    if (!response.ok) {
+      throw new Error("Erro ao buscar os posts");
+    }
+
+    // Converte a resposta para JSON
+    const posts = await response.json();
+    return posts; // Garante o retorno dos posts em caso de sucesso
+  } catch (error) {
+    console.error("Erro ao listar posts:", error);
+    return []; // Retorna um array vazio em caso de erro
+  }
+};
+
+export default function Index() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [authorName, setAuthorName] = useState<{ [key: string]: string }>({});
+
+  // Carrega os posts ao montar o componente
+  useEffect(() => {
+    const loadPosts = async () => {
+      const fetchedPosts = await listPosts();
+      setPosts(fetchedPosts);
+    };
+
+    loadPosts();
+  }, []);
+
+  useEffect(() => {
+    const loadAuthors = async () => {
+      const authorNameMap: { [key: string]: string } = {};
+
+      for (const post of posts) {
+        if (!authorNameMap[post.authorId.toString()]) {
+          const authorName = await getAuthor(post.authorId.toString());
+          authorNameMap[post.authorId.toString()] = authorName;
+        }
+      }
+
+      setAuthorName(authorNameMap);
+    };
+
+    if (posts.length > 0) {
+      loadAuthors();
+    }
+  }, [posts]);
+
+  // Função para renderizar um único post
+  const renderPost = ({ item }: { item: Post }) => (
+    <View style={styles.postContainer}>
+      <View style={styles.header}>
+        <Text style={styles.username}>{authorName[item.authorId.toString()] || "Carregando..."}</Text>
+      </View>
+      <Text style={styles.title}>{item.title}</Text>
+      <Text style={styles.content}>{item.content}</Text>
+    </View>
+  );
+
+  let [fontsLoaded] = useFonts({
+    Roboto_400Regular,
+    Roboto_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <View style={styles.topBar}>
+          <Image source={LogoUVV} style={styles.logo}/>
+        </View>
+
+      <FlatList
+        data={posts}
+        renderItem={renderPost}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.list}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
+  topBar: {
+    padding: 16,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+  },
+  logo: {
+    width: 50,
+    height: 50,
+  },
+  list: {
+    padding: 16,
+  },
+  postContainer: {
+    marginBottom: 20,
+    padding: 16,
+    backgroundColor: '#111',
+    borderRadius: 10,
+  },
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  userIcon: {
+    marginRight: 8,
+  },
+  username: {
+    color: '#fff',
+    fontSize: 16,
+    fontFamily: 'Roboto_700Bold',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#fff",
+    marginBottom: 8,
+  },
+  content: {
+    color: '#ddd',
+    fontSize: 14,
+    fontFamily: 'Roboto_400Regular',
   },
 });
