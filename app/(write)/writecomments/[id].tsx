@@ -6,7 +6,92 @@ import { router, useRouter } from 'expo-router';
 import { useLocalSearchParams } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 
-const CommentScreen = () => { 
+interface Comment {
+  id: number,
+  title: string,
+  content: string,
+  published: boolean,
+  postId: number, 
+  authorId: number,
+}
+
+interface Post {
+  id: number; 
+  authorId: number;
+  title: string;
+  content: string;
+}
+
+const getPost = async (postId: string): Promise<number> => {
+  try {
+    let token;
+    if (Platform.OS === 'web') {
+    token = sessionStorage.getItem("token_autenticacao")
+    } else {
+    token = SecureStore.getItem("token_autenticacao");
+    }
+    const response = await fetch(`http://localhost:3000/post/${postId}`, {
+    method: "GET",
+    headers: {
+        "Content-Type": "application/json",
+        "authorization": token??""
+    },
+    });
+
+    if (!response.ok) {
+    throw new Error("Erro ao buscar o post");
+    }
+
+    // Converte a resposta para JSON
+    const post: Post = (await response.json()).post;
+
+    // Retorna o nome do autor
+    return post.authorId;
+  } catch (error) {
+      console.error("Erro ao obter o post:", error);
+      return 1;
+  }
+}
+
+interface Author {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+}
+
+const getAuthor = async (authorId: number): Promise<string> => {
+  try {
+      let token;
+      if (Platform.OS === 'web') {
+      token = sessionStorage.getItem("token_autenticacao")
+      } else {
+      token = SecureStore.getItem("token_autenticacao");
+      }
+      const response = await fetch(`http://localhost:3000/author/${authorId}`, {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+          "authorization": token??""
+      },
+      });
+
+      if (!response.ok) {
+      throw new Error("Erro ao buscar o autor");
+      }
+
+      // Converte a resposta para JSON
+      const author: Author = (await response.json()).author;
+
+      // Retorna o nome do autor
+      return author.name;
+  } catch (error) {
+      console.error("Erro ao obter o nome do autor:", error);
+      return "Autor desconhecido";
+  }
+};
+
+const CommentScreen = async () => { 
   const inputRef = useRef<TextInput>(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -63,6 +148,8 @@ const CommentScreen = () => {
     }
   }, []);
 
+  const getPostAuthor = await getAuthor(await getPost(id.toString()));
+
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
@@ -79,7 +166,7 @@ const CommentScreen = () => {
       </View>
 
       <Text style={styles.postIdText}>
-        Em resposta a <Text style={styles.postId}>{id}</Text>
+        Em resposta a <Text style={styles.postId}>{getPostAuthor}</Text>
       </Text>
 
       <TextInput

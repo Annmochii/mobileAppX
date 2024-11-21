@@ -14,6 +14,7 @@ interface Post {
   title: string;
   content: string;
 }
+
 interface Author {
   id: number;
   name: string;
