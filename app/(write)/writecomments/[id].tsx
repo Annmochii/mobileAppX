@@ -91,10 +91,11 @@ const getAuthor = async (authorId: number): Promise<string> => {
   }
 };
 
-const CommentScreen = async () => { 
+const CommentScreen = () => { 
   const inputRef = useRef<TextInput>(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [author, setAuthor] = useState('');
   const { id } = useLocalSearchParams();
 
   const isPostEnabled = title !== '' && content !== '';
@@ -148,8 +149,8 @@ const CommentScreen = async () => {
     }
   }, []);
 
-  const getPostAuthor = await getAuthor(await getPost(id.toString()));
-
+  const getPostAuthor = async ()=> setAuthor(await getAuthor(await getPost(id.toString())));
+  getPostAuthor();
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
@@ -166,7 +167,7 @@ const CommentScreen = async () => {
       </View>
 
       <Text style={styles.postIdText}>
-        Em resposta a <Text style={styles.postId}>{getPostAuthor}</Text>
+        Em resposta a <Text style={styles.postId}>{author}</Text>
       </Text>
 
       <TextInput
