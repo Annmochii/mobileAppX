@@ -25,7 +25,7 @@ export default function SignUp() {
     console.log("Senha: "+ senha);
     console.log("Nome: "+ nome);
 
-    const response = await fetch("http://localhost:3000//auth/signup", {
+    const response = await fetch("http://localhost:3000/auth/signup", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

@@ -154,7 +154,7 @@ const CommentScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        <IconButton onClick={() => router.push("../(tabs)")} style={styles.closeButton}>
+        <IconButton onClick={() => router.push("../../(tabs)")} style={styles.closeButton}>
           <CloseIcon />
         </IconButton>
 
