@@ -1,50 +1,113 @@
-# Welcome to your Expo app 👋
+# Projeto do Segundo Bimestre de Programação Avançada para Web
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Professor:** Otávio Lube  
+**Aluna:** Anna Maria Lima da Silva  
+**Matrícula:** 202202977
 
-## Get started
+---
 
-1. Install dependencies
+Esse projeto contém os códigos do projeto do segundo bimestre de Programação Avançada para Web, disciplina obrigatória do curso de Ciências da Computação na Universidade de Vila Velha.
 
-   ```bash
-   npm install
-   ```
+> Frameworks e bibliotecas:  
+>  [![NodeJS](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://github.com/nvm-sh/nvm?tab=readme-ov-file#install--update-script) ![Typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) ![Express](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) [![PrismaORM](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)](https://www.prisma.io/docs/getting-started/quickstart) [![TS-NODE-DEV](https://img.shields.io/badge/TS--NODE--DEV-red?style=for-the-badge&logo=npm&logoColor=white&link=https://www.npmjs.com/package/ts-node-dev)](https://www.npmjs.com/package/ts-node-dev) [![GroqCloud](https://img.shields.io/badge/GroqCloud-f55036?style=for-the-badge&logo=groq&logoColor=white&link=https://console.groq.com/playground)](https://console.groq.com/playground) [![bcrypt](https://img.shields.io/badge/bcrypt-red?style=for-the-badge&logo=npm&logoColor=white&link=https://www.npmjs.com/package/bcrypt?activeTab=readme)](https://www.npmjs.com/package/bcrypt?activeTab=readme) [![jsonwebtoken](https://img.shields.io/badge/jsonwebtoken-red?style=for-the-badge&logo=npm&logoColor=white&link=https://www.npmjs.com/package/jsonwebtoken)](https://www.npmjs.com/package/jsonwebtoken) ![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 
-2. Start the app
+---
 
-   ```bash
-    npx expo start
-   ```
+# Como usar
 
-In the output, you'll find options to open the app in a
+Abra o arquivo completo no Visual Studio Code, ou sua IDE/plataforma de preferência, em seguida, abra terminais diferentes para cada pasta (Back-End e Front-End) e siga as instruções abaixo:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Pasta **Back-End**
 
-## Get a fresh project
+### 1. Configuração Inicial
 
-When you're ready, run:
+Primeiro, na pasta Back-End, crie um arquivo chamado ".env" e escreva o seguinte texto dentro dele:
 
-```bash
-npm run reset-project
+```
+  DATABASE_URL=file:./dev.db
+  GROQ_API_KEY=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
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2.Instale as Dependências
 
-## Learn more
+Em seguida, no terminal aberto para a pasta Back-End, digite:
 
-To learn more about developing your project with Expo, look at the following resources:
+```
+npm install
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 3. Executando o Projeto
 
-## Join the community
+Você pode executar o projeto através do comando:
 
-Join our community of developers creating universal apps.
+```
+npm run build
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Se você estiver desevolvendo, o ideal é que, ao invés do `npm run build`, o comando usado seja:
+
+```
+npm run dev
+```
+
+### 4. Resolução de erros
+
+Os erros podem estar relacionado ao PrismaORM, por esse motivo, uma forma de resolvê-los é criando novamente o banco de dados:
+
+```
+ npx prisma migrate dev --name init
+```
+
+### 5. Extensões do VSCode recomendadas para o desenvolvimento (VSCode):
+
+```
+{
+    "recommendations": [
+        "vscode-icons-team.vscode-icons",
+        "esbenp.prettier-vscode",
+        "prisma.prisma",
+        "Prisma.prisma-insider"
+        "rangav.vscode-thunder-client"
+        "mikestead.dotenv"
+        "qwtel.sqlite-viewer"
+    ]
+}
+```
+
+---
+
+## Pasta **Front-End**
+
+### 1. Instale as Dependências
+
+Primeiro, no terminal aberto para a pasta Front-End, digite:
+
+```
+npm install
+```
+
+### 2. Executando o Projeto
+
+Em seguida, você pode executar o projeto através do comando:
+
+```
+npm run web
+```
+
+---
+
+## Considerações finais
+
+1. Cada uma das pastas possui um arquivo **README.md** próprio com instruções e passo-a-passo de como o projeto foi desenvolvido, porém, o projeto foi feito para funcionar seguindo apenas as instruções deste arquivo, que está fora das pastas.
+2. Os arquivos devem ser executados na ordem **Back-End** > **Front-End** para funcionar da maneira correta, sem erros.
+3. É importante instalar as extensões **Prisma** e **dotenv** antes de começar a executar o código da API, para evitar transtornos.
+4. Para acessar o aplicativo, é possível cadastrar um usuário próprio, e você poderá acessar as páginas interiores. Outra forma de entrar é através de um cadastro já feito, por exemplo com o usuário
+
+```
+{
+  "email:" "annama.silva@gmail.com"
+  "senha:" "ann@1234"
+}
+```
